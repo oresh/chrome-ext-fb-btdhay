@@ -4,11 +4,13 @@ chrome.extension.sendMessage({msg: "I'm content-script"}, function (response) {
     console.log(response);
 });
 */
+
 (function() {
   if (window.location.hostname == 'www.facebook.com') {
+  	var now = new Date();
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     if (localStorage.requestSent) {
-      let now = new Date();
-      let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      
       if (localStorage.requestSent == today) {
         return;
       }
@@ -17,36 +19,37 @@ chrome.extension.sendMessage({msg: "I'm content-script"}, function (response) {
     var reminders = document.getElementsByClassName('fbRemindersStory');
     for (var i = 0, len = reminders.length; i < len; i++) {
       reminder = reminders[i].getElementsByClassName('fbRemindersIcon');
-      if (reminder[0].classList.contains('sp_RX49PX1k27y_2x')) {
-        var link = reminders[i].getElementsByTagName('a');
+      if (reminder[0].classList.contains('sp_RX49PX1k27y_2x') || reminder[0].classList.contains('sp_W5zYJPccZzp_2x')) {
+      	var link = reminders[i].getElementsByTagName('a');
         link[0].click();
         // wait 3 seconds for the form to open
         setTimeout(function() {
-          var birthdays = document.querySelectorAll('._5j06');
+          var birthdays = document.querySelectorAll('._5j09');
           for (var j = 0, lenj = birthdays.length; j < lenj; j++) {
             day = birthdays[j];
-            day.querySelectorAll('textarea')[0].value = getGreetingText();
-            person = day.querySelectorAll('._5j0a a')[0].innerHTML;
-            console.log(person);
-            if (confirm('Publish the Bd congrats to ' + person + '?')) {
-                console.log('published!');
-                //day.querySelectorAll('button._42ft').click();
-            } else {
-              day.querySelectorAll('textarea')[0].value = '';
-            }
+            if (day.querySelectorAll('textarea').length) {
+	            day.querySelectorAll('textarea')[0].value = getGreetingText();
+	            person = day.querySelectorAll('._5j0a a')[0].innerHTML;
+	            if (confirm('Say congrats to ' + person + '?')) {
+	              day.querySelectorAll('button._42ft')[0].click();
+	            } else {
+	              day.querySelectorAll('textarea')[0].value = '';
+	            }
+	          }
           }
           localStorage.requestSent = today;
-        }, 2500);
+        }, 3500);
       }
     }
 
     function getGreetingText() {
 			var greeting = [
+				"Happy Birthday!!!",
 				"Happy Birthday with cookies!",
-				"Hey, It's Your Birthday, It's Your Birthday, We're gonna party like it's Your Birthday!",
+				"Hey, It's your Birthday, It's your Birthday, We're gonna party like it's your Birthday!",
 				"On this cheerful and awesome day, I say Happy Birthday!",
-				"They say it's an awesome day, because it's Your Birthday!",
-				"The time has come, Happy Birthday to You!"
+				"They say it's an awesome day, because it's your Birthday!",
+				"The time has come, Happy Birthday to you!"
 			];
 
 			var wishes = [
@@ -68,9 +71,9 @@ chrome.extension.sendMessage({msg: "I'm content-script"}, function (response) {
 			];
 
 			var prewish = [
-				"On this amazing day I wish You ",
-				"Without further to do, I wish You ",
-				"For this day and the next to be 364 awesome I wish You ",
+				"On this amazing day I wish you ",
+				"Without further ado, I wish you ",
+				"For this day and the next to be 364 awesome I wish you ",
 			]
 
 			var invites = [
@@ -108,7 +111,7 @@ chrome.extension.sendMessage({msg: "I'm content-script"}, function (response) {
 			function getItemsFromArray(array, number_of_items, separators) {
 				var localArr = Array.from(array);
 				var text = ''
-				for (var i = 1; i < number_of_items; i++) {
+				for (var i = 0; i < number_of_items; i++) {
 					var ind = Math.floor(Math.random() * localArr.length);
 					text += localArr[ind];
 					if (separators && separators[i]) {
@@ -119,11 +122,11 @@ chrome.extension.sendMessage({msg: "I'm content-script"}, function (response) {
 				return text;
 			}
 
-			text = getGreeting() + ' ' + getPrewish();
+			text = getGreeting() + '\n' + getPrewish();
 			text += getWish(3, [', ', ' and ', '! ']);
-			text += 'Besides that I would like to meet with you over' + getInvite();
-			text +=  ' when we both have the time.';
-			text += ' ' + getSmiles(5);
+			// text += 'Besides that I would like to meet with you over ' + getInvite();
+			// text +=  ' when we both have the time.';
+			text += ' ' + getSmiles(3);
 			return text;
 		}
 
