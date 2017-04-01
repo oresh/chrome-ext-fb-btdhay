@@ -1,7 +1,7 @@
 {
     "extName": {
-        "message": "New Extension",
-        "description": "Do not translate extension name"
+        "message": "Automated FB Birthday message",
+        "description": "Sends automated bithday message to your Facebook friends."
     },
     "extDescr": {
         "message": "Extension's description",
