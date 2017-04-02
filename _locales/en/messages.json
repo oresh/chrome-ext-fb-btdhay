@@ -1,13 +1,12 @@
 {
     "extName": {
-        "message": "Automated FB Birthday message",
+        "message": "Automated FB Birthday Messages",
         "description": "Sends automated bithday message to your Facebook friends."
     },
     "extDescr": {
         "message": "Extension's description",
         "description": "Extension's description"
     },
-
     "o_tabs_help": {
         "message": "Help",
         "description": "Tab name. Prefix 'o_' for options page"

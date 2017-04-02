@@ -1,44 +1,33 @@
-// NOTE: JSON standart does not allow comments. Remove them
-//Manifest Files - http://developer.chrome.com/extensions/manifest
 {
     "name": "__MSG_extName__",
     "description": "__MSG_extDescr__",
     "version": "0.1",
     "manifest_version": 2,
-
     "minimum_chrome_version": "25",
     "default_locale": "en",
     "icons": {
-        "16": "img/ext_icons/16.png",
-        "48": "img/ext_icons/48.png",
         "128": "img/ext_icons/128.png"
     },
     "page_action": {
         "default_icon": {
-            "19": "img/ext_icons/19.png",
-            "38": "img/ext_icons/38.png"
+            "128": "img/ext_icons/128.png"
         },
         "default_title": "__MSG_extName__",
         "default_popup": "popup.html"
     },
     "background": {
         "scripts": ["js/storage.js", "js/background.js"],
-        // it's eventPage( http://developer.chrome.com/extensions/event_pages )
-        // Use 'true' for backgroundPage
         "persistent": false
     },
     "content_scripts": [
         {
-            //    http://developer.chrome.com/extensions/match_patterns
             "matches": ["https://www.facebook.com/*"],
             "css": ["css/content_script.css"],
             "js": ["js/storage.js","js/content_script.js"]
         }
     ],
     "options_page": "options.html",
-
-    //  https://developer.chrome.com/extensions/declare_permissions
-    "permissions": [
+   "permissions": [
         "http://*.google.com/*",
         "alarms",
         "background",
