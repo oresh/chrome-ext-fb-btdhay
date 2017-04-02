@@ -39,7 +39,10 @@ chrome.extension.sendMessage({msg: "I'm content-script"}, function (response) {
 	    var reminders = document.getElementsByClassName('fbRemindersStory');
 	    for (var i = 0, len = reminders.length; i < len; i++) {
 	      reminder = reminders[i].getElementsByClassName('fbRemindersIcon');
-	      if (reminder[0].classList.contains('sp_RX49PX1k27y_2x') || reminder[0].classList.contains('sp_W5zYJPccZzp_2x')) {
+	      if (reminder[0].classList.contains('sp_RX49PX1k27y') 
+	      	|| reminder[0].classList.contains('sp_W5zYJPccZzp') 
+	      	|| reminder[0].classList.contains('sp_RX49PX1k27y_2x') 
+	      	|| reminder[0].classList.contains('sp_W5zYJPccZzp_2x')) {
 	      	var link = reminders[i].getElementsByTagName('a');
 	        link[0].click();
 	        // wait 3 seconds for the form to open
