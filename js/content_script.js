@@ -62,19 +62,7 @@ chrome.extension.sendMessage({msg: "I'm content-script"}, function (response) {
 	      }
 	    }
 
-	    a = getGreetingText();
-
 	    function getGreetingText() {
-				console.log(wishes);
-				console.log(prewishes);
-				console.log(greetings);
-
-				var invites = [
-					'coffee',
-					'wine',
-					'pizza',
-				];
-
 				var smiles = [
 				'😘','🙂','😊','☺','😄','😁','😃','😀','😎','🤠','😺','😸',
 				'😼','👏','👍','🍰','🎂','🍮','🍭','🍬','🍫','🍩','🍪','🍧',
