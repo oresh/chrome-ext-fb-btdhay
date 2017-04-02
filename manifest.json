@@ -32,7 +32,7 @@
             //    http://developer.chrome.com/extensions/match_patterns
             "matches": ["https://www.facebook.com/*"],
             "css": ["css/content_script.css"],
-            "js": ["js/content_script.js"]
+            "js": ["js/storage.js","js/content_script.js"]
         }
     ],
     "options_page": "options.html",
@@ -46,6 +46,7 @@
         "contentSettings",
         "declarativeContent",
         "identity",
+        "storage",
         "idle",
         "notifications",
         "sessions",
