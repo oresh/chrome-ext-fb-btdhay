@@ -74,7 +74,7 @@ document.addEventListener('optionsPageReady', function () {
         var prewishes = $('#prewishes').val(items.prewishes);
         var greetings = $('#greetings').val(items.greetings);
         text = getGreetingText(items.greetings.split('\n'), items.prewishes.split('\n'), items.wishes.split('\n'));
-        $('#example').html(text);
+        $('#example').html(text.replace('\n','<br>'));
       });
     }
 
