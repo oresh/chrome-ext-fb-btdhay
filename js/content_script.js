@@ -12,7 +12,6 @@ chrome.extension.sendMessage({msg: "I'm content-script"}, function (response) {
 		var wishes, prewishes, greetings;
 
 		function get_options() {
-	    // Use default value color = 'red' and likesColor = true.
 	    chrome.storage.sync.get({
 	      wishes: wishesLocalStorage.default_options.wishes,
 	      prewishes : wishesLocalStorage.default_options.prewishes,
@@ -30,19 +29,16 @@ chrome.extension.sendMessage({msg: "I'm content-script"}, function (response) {
 	  	var now = new Date();
 	    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 	    if (localStorage.requestSent) {
-	      
-	      if (localStorage.requestSent == today) {
-	        return;
-	      }
+	      if (localStorage.requestSent == today) return;
 	    }
-	    var reminder, people, name;
+	    var reminder, people, name, icon, bDayIcon;
 	    var reminders = document.getElementsByClassName('fbRemindersStory');
 	    for (var i = 0, len = reminders.length; i < len; i++) {
 	      reminder = reminders[i].getElementsByClassName('fbRemindersIcon');
-	      if (reminder[0].classList.contains('sp_RX49PX1k27y') 
-	      	|| reminder[0].classList.contains('sp_W5zYJPccZzp') 
-	      	|| reminder[0].classList.contains('sp_RX49PX1k27y_2x') 
-	      	|| reminder[0].classList.contains('sp_W5zYJPccZzp_2x')) {
+	      icon = reminder[0].querySelectorAll('i u');
+	      bDayIcon = icon.length && icon[0].innerHTML == 'birthday';
+
+	      if (bDayIcon) {
 	      	var link = reminders[i].getElementsByTagName('a');
 	        link[0].click();
 	        // wait 3 seconds for the form to open
@@ -56,75 +52,49 @@ chrome.extension.sendMessage({msg: "I'm content-script"}, function (response) {
 		            if (confirm('Say congrats to ' + person + '?')) {
 		              day.querySelectorAll('button._42ft')[0].click();
 		            } else {
-		              day.querySelectorAll('textarea')[0].value = '';
+		            	// remove text if not used.
+		              //day.querySelectorAll('textarea')[0].value = '';
 		            }
 		          }
 	          }
 	          localStorage.requestSent = today;
-	        }, 3500);
+	        }, 3000);
 	      }
 	    }
 
 	    function getGreetingText() {
 				var smiles = [
-				'😘','🙂','😊','☺','😄','😁','😃','😀','😎','🤠','😺','😸',
-				'😼','👏','👍','🍰','🎂','🍮','🍭','🍬','🍫','🍩','🍪','🍧',
-				'🍨','🍦','🥂','🍺','🍷','🍹','🍾','🏅','🎸','🎷','❗']
-
-
-				function getInvite() {
-					return invites[Math.floor(Math.random() * invites.length)];
-				}
-
-				function getGreeting() {
-					return greetings[Math.floor(Math.random() * greetings.length)]
-				}
-
-				function getPrewish() {
-					return prewishes[Math.floor(Math.random() * prewishes.length)];
-				}
-
-				function getWish(number_wishes, separators) {
-					return getItemsFromArray(wishes, number_wishes, separators)
-				}
-
-				function getSmiles(number_smiles, separators) {
-					return getItemsFromArray(smiles, number_smiles, separators)
-				}
+					'😘','🙂','😊','☺','😄','😁','😃','😀','😎','🤠','😺','😸',
+					'😼','👏','👍','🍰','🎂','🍮','🍭','🍬','🍫','🍩','🍪','🍧',
+					'🍨','🍦','🥂','🍷','🍹','🍾','🏅','🎸','🎷','❗', '🎈','🎉',
+					'🎉','🎉','🎁','🎈','🍰','🍰'
+				]
+				
+				let getInvite = () => invites[Math.floor(Math.random() * invites.length)];
+				let getGreeting = () => greetings[Math.floor(Math.random() * greetings.length)];
+				let getPrewish = () => prewishes[Math.floor(Math.random() * prewishes.length)];
+				let getWish = (number_wishes, separators) => getItemsFromArray(wishes, number_wishes, separators);
+				let getSmiles = (number_smiles, separators) => getItemsFromArray(smiles, number_smiles, separators);
 
 				function getItemsFromArray(array, number_of_items, separators) {
 					var localArr = Array.from(array);
-					var text = ''
+					var out = ''
 					for (var i = 0; i < number_of_items; i++) {
 						var ind = Math.floor(Math.random() * localArr.length);
-						text += localArr[ind];
+						out += localArr[ind];
 						if (separators && separators[i]) {
-							text += separators[i];
+							out += separators[i];
 						}
 						localArr.splice(ind, 1);
 					}
-					return text;
+					return out;
 				}
 
-				text = getGreeting() + '\n' + getPrewish() + ' ';
-				text += getWish(3, [', ', ' and ', '! ']);
-				// text += 'Besides that I would like to meet with you over ' + getInvite();
-				// text +=  ' when we both have the time.';
-				text += ' ' + getSmiles(3);
+				var text = getGreeting() + '\n' + getPrewish() + ' ';
+				text += getWish(3, [', ', ' and ', '! ']) + ' ' + getSmiles(3);
 				return text;
 			}
 		}
 
   }
 })();
-
-// Receiving message from a background page
-/*
-chrome.extension.onMessage.addListener(
-    function (request, sender, sendResponse) {
-        if (request.greeting === "Do you hear me?") {
-            sendResponse({answer: "Yes"});
-        }
-    }
-);
-*/
